@@ -1,0 +1,13 @@
+server:
+  AppMode: debug
+  HttpPort: 3000
+  JwtKey: <YourJwtKey>
+  JwtIssuer: travelfriend
+datasource:
+  dirverName: mysql
+  host: localhost
+  port: 3306
+  database: picc
+  username: root
+  password: Li123456
+  charset: utf8
