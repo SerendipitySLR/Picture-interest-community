@@ -6,7 +6,7 @@ import (
 	errmsg "ptc/internal/ermsg"
 )
 
-//服务端不带信息响应
+// 服务端不带信息响应
 func Response(c *gin.Context, status int) {
 	var context = gin.H{
 		"status":  status,
@@ -18,7 +18,7 @@ func Response(c *gin.Context, status int) {
 	)
 }
 
-//服务端带信息响应
+// 服务端带信息响应
 func ResponseWithData(c *gin.Context, status int, data map[string]interface{}) {
 	var context = gin.H{
 		"status":  status,

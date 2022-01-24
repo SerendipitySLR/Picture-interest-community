@@ -28,7 +28,7 @@ func InitDbContext() {
 		// gorm日志模式：silent
 		Logger: logger.Default.LogMode(logger.Silent),
 		// 关闭外键约束
-		DisableForeignKeyConstraintWhenMigrating: false,
+		DisableForeignKeyConstraintWhenMigrating: true,
 		NamingStrategy: schema.NamingStrategy{
 			// 使用单数表名，启用该选项，此时，`User` 的表名应该是 `user`
 			SingularTable: true,
@@ -42,7 +42,18 @@ func InitDbContext() {
 	}
 
 	// 迁移数据表,还没统一，所以自己加自己的。。。
-	_ = db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Follow{}...)
+	_ = db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
+		&model.UserDetails{},
+		&model.UserRelatedData{},
+		&model.UserRegister{},
+		&model.Collection{},
+		&model.Comment{},
+		&model.Follow{},
+		&model.Like{},
+		&model.Post{},
+		&model.Feeds{},
+		&model.Forward{},
+		&model.PostPhoto{})
 }
 
 func GetDB() *gorm.DB {

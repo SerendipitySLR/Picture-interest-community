@@ -17,7 +17,8 @@ func main() {
 	// 初始化gin的路由
 	ginRoute := router.InitRouter()
 	//运行
-	err := ginRoute.Run(viper.GetString("server.HttpPort"))
+	port := viper.GetString("server.HttpPort")
+	err := ginRoute.Run(":" + port)
 	if err != nil {
 		return
 	}

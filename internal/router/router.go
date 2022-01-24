@@ -2,21 +2,47 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"ptc/api/v1/account"
 	"ptc/api/v1/mainpage"
-	"ptc/pkg/log"
+	"ptc/api/v1/personalpage"
+	"ptc/internal/middleware"
 )
 
 func InitRouter() *gin.Engine {
-	//gin.SetMode(.AppMode)
+	// gin.SetMode(.AppMode)
 
 	r := gin.Default()
-	//发送模块
+	// 发送模块
 	routerV1MainPage := r.Group("/v1/mainPage")
 	{
-		routerV1MainPage.POST("/send", mainpage.Send)
-		routerV1MainPage.POST("/follow", mainpage.Forward)
+		routerV1MainPage.POST("/send", middleware.JwtMiddleware(), mainpage.Send)
+		routerV1MainPage.POST("/forward", middleware.JwtMiddleware(), mainpage.Forward)
+		routerV1MainPage.GET("/page", mainpage.ShowPage)
+		routerV1MainPage.POST("/like", mainpage.AddLike)
+		routerV1MainPage.GET("/comment", mainpage.ShowComment)
+		routerV1MainPage.GET("/moreComment", mainpage.ShowMoreComment)
+		routerV1MainPage.POST("/insertComment", mainpage.InsertComment)
+		routerV1MainPage.GET("/showCollection", mainpage.ShowCollection)
+		routerV1MainPage.POST("/addCollection", mainpage.AddCollection)
 	}
-	// 其他模块...
+	// 登陆注册模块
+	routerV1Account := r.Group("/v1/account")
+	{
+		routerV1Account.POST("/login", account.Login)
+		routerV1Account.POST("/register", account.Register)
+	}
+
+	// 个人主页模块
+	routerV1PersonalPage := r.Group("/v1/personalPage")
+	{
+		routerV1PersonalPage.GET("/showPersonInfo", personalpage.ShowPersonalInfo)
+		routerV1PersonalPage.GET("/showPersonalPost", personalpage.ShowPersonalPost)
+		routerV1PersonalPage.GET("/showCollection", mainpage.ShowCollection)
+		routerV1PersonalPage.GET("/showCollectionPost", personalpage.ShowCollectionPost)
+		routerV1PersonalPage.POST("/newCollection", personalpage.NewCollection)
+		routerV1PersonalPage.GET("/showProfile", personalpage.ShowProfile)
+		routerV1PersonalPage.POST("/modifyProfile", personalpage.ModifyProfile)
+	}
 
 	//注册zap日志框架的中间件
 	return r
