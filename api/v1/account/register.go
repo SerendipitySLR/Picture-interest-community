@@ -24,6 +24,7 @@ func Register(c *gin.Context) {
 	//添加新账号
 	repoErr := respository.AddAccount(&account)
 	if repoErr != nil {
+		fmt.Println(repoErr.Error())
 		response.Response(c, errmsg.ERROR)
 		return
 	}
@@ -32,6 +33,7 @@ func Register(c *gin.Context) {
 	data := make(map[string]interface{})
 	token, err := jwt.GetToken(account.Telephone)
 	if err != nil {
+		fmt.Println(err.Error())
 		response.Response(c, errmsg.ERROR)
 		return
 	}
