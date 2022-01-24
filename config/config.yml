@@ -2,7 +2,7 @@ server:
   AppMode: debug
   HttpPort: 8080
   JwtKey: YourJwtKey
-  JwtIssuer: travelfriend
+  JwtIssuer: PICC
 datasource:
   dirverName: mysql
   host: localhost
