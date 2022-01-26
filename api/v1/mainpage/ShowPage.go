@@ -36,7 +36,7 @@ func ShowPage(c *gin.Context) {
 		//通过userId查找UserDetails的表项，因为要使用到其中的用户名，头像信息
 		db.Where("user_id = ?", feed.UserId).Find(&temUserDetails)
 		//生成头像的url
-		temUserDetails.ProfileUrl = "https://" + c.Request.Host + temUserDetails.ProfileUrl
+		temUserDetails.ProfileUrl = "http://" + c.Request.Host + temUserDetails.ProfileUrl
 		//postType为0是post，为1是forward，从相应的表中取出sendPost所需要的信息，装填进去
 		if feed.PostType == 0 {
 			var temPost model.Post
@@ -45,7 +45,7 @@ func ShowPage(c *gin.Context) {
 			db.Where("post_id = ?", feed.PostId).Model(&model.PostPhoto{}).Pluck("photo_url", &photoUrls)
 			fmt.Println(photoUrls)
 			for i, _ := range photoUrls {
-				photoUrls[i] = "https://" + c.Request.Host + photoUrls[i]
+				photoUrls[i] = "http://" + c.Request.Host + photoUrls[i]
 			}
 			temSendPage := model.NewSendPost(temPost, temUserDetails, photoUrls)
 			sendPage = append(sendPage, *temSendPage)
@@ -56,10 +56,10 @@ func ShowPage(c *gin.Context) {
 			db.Where("forward_id = ?", feed.PostId).Find(&temForwards)
 			db.Where("post_id = ?", temForwards.PostId).Model(&model.PostPhoto{}).Pluck("photo_url", &photoUrls)
 			for i, _ := range photoUrls {
-				photoUrls[i] = "https://" + c.Request.Host + photoUrls[i]
+				photoUrls[i] = "http://" + c.Request.Host + photoUrls[i]
 			}
 			db.Where("user_id = ?", feed.SendId).Find(&sender)
-			sender.ProfileUrl = "https://" + c.Request.Host + sender.ProfileUrl
+			sender.ProfileUrl = "http://" + c.Request.Host + sender.ProfileUrl
 			temSendPage := model.NewSendForward(temForwards, temUserDetails, sender, photoUrls)
 			sendPage = append(sendPage, *temSendPage)
 		}
