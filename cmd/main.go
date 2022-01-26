@@ -16,6 +16,8 @@ func main() {
 	respository.InitDbContext()
 	// 初始化gin的路由
 	ginRoute := router.InitRouter()
+	//访问静态资源
+	ginRoute.StaticFS("/images",http.Dir("./images"))
 	//运行
 	port := viper.GetString("server.HttpPort")
 	err := ginRoute.Run(":" + port)
