@@ -24,6 +24,10 @@ const (
 
 	FORWARD_FORMAT_ERROR = 706
 	FORWARD_WRITE_ERROR  = 707
+	FROM_FORMAT_ERROR = 708
+	FILE_SAVE_ERROR   = 709
+	
+	
 	// 个人主页模块错误
 
 	// 用户详细信息错误
@@ -55,6 +59,9 @@ var codeMsg = map[int]string{
 
 	FORWARD_FORMAT_ERROR: "转发帖子格式错误",
 	FORWARD_WRITE_ERROR:  "转发表写入错误",
+	
+	FROM_FORMAT_ERROR: "上传文件错误",
+	FILE_SAVE_ERROR:   "文件写入错误",
 }
 
 //通过错误码获取错误信息
