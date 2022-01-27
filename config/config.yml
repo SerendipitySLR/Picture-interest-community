@@ -11,5 +11,5 @@ datasource:
   port: 3306
   database: picc
   username: root
-  password: Li782142320
+  password: 123456
   charset: utf8
