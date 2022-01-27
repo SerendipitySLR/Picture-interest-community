@@ -31,6 +31,13 @@ func InitRouter() *gin.Engine {
 		routerV1Account.POST("/login", account.Login)
 		routerV1Account.POST("/register", account.Register)
 	}
+	
+	// 上传模块
+	routerV1UpLoad := r.Group("/v1/upload")
+	{
+		routerV1UpLoad.POST("/post/image", upload.PostImage)
+		routerV1UpLoad.POST("/profile/image", upload.ProfileImage)
+	}
 
 	// 个人主页模块
 	routerV1PersonalPage := r.Group("/v1/personalPage")
