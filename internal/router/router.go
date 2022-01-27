@@ -5,6 +5,7 @@ import (
 	"ptc/api/v1/account"
 	"ptc/api/v1/mainpage"
 	"ptc/api/v1/personalpage"
+	"ptc/api/v1/upload"
 	"ptc/internal/middleware"
 )
 
