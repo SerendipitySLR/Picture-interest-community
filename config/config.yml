@@ -3,6 +3,8 @@ server:
   HttpPort: 8080
   JwtKey: YourJwtKey
   JwtIssuer: PICC
+  PostImages: ./images/post/
+  ProfileImages: ./images/profile/
 datasource:
   dirverName: mysql
   host: localhost
