@@ -18,14 +18,14 @@ type UserRegister struct {
 }
 
 type UserDetails struct {
-	UserId     int `gorm:"primaryKey"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	DeletedAt  *time.Time
-	NickName   string
-	Sex        string
-	Birthday   string
-	Location   string
+	UserId    int `gorm:"primaryKey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time
+	NickName  string
+	Sex       string
+	//Birthday   string
+	//Location   string
 	Signature  string
 	ProfileUrl string
 }
@@ -43,6 +43,9 @@ type UserRelatedData struct {
 	ProfileUrl     string
 }
 
+func (UserRegister) TableName() string {
+	return "user_register"
+}
 func (UserDetails) TableName() string {
 	return "user_details"
 }

@@ -32,7 +32,7 @@ func InitRouter() *gin.Engine {
 		routerV1Account.POST("/login", account.Login)
 		routerV1Account.POST("/register", account.Register)
 	}
-	
+
 	// 上传模块
 	routerV1UpLoad := r.Group("/v1/upload")
 	{
@@ -50,6 +50,9 @@ func InitRouter() *gin.Engine {
 		routerV1PersonalPage.POST("/newCollection", personalpage.NewCollection)
 		routerV1PersonalPage.GET("/showProfile", personalpage.ShowProfile)
 		routerV1PersonalPage.POST("/modifyProfile", personalpage.ModifyProfile)
+		routerV1PersonalPage.POST("/modifyPhoto", personalpage.ModifyPhoto)
+		routerV1PersonalPage.POST("/deletePhoto", personalpage.DeletePhoto)
+		routerV1PersonalPage.POST("/modifyPassword", personalpage.ModifyPassword)
 	}
 
 	//注册zap日志框架的中间件

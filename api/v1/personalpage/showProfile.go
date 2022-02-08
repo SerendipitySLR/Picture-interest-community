@@ -1,6 +1,7 @@
 package personalpage
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"ptc/internal/model"
 	"ptc/internal/response"
@@ -11,20 +12,18 @@ func ShowProfile(c *gin.Context) {
 	userId := c.Query("UserId")
 	//fmt.Println(userId)
 	db := respository.GetDB()
-	//publisherId := c.Query("publisherId")
-	var account model.UserDetails
-	//db.AutoMigrate(&comments)
+	var account0 model.UserDetails
+	var account1 model.UserRegister
 
 	//select语句
-	db.Where("user_id = ?", userId).Find(&account)
-
-	//db.Where("post_id = ? AND post_type = ?",postId,postType).Find(&comments)
-	//c.JSON(http.StatusOK, gin.H{
-	//	"CommentList": comments,
-	//})
+	db.Where("user_id = ?", userId).Find(&account0)
+	db.Where("uid = ?", userId).Find(&account1)
 
 	data := make(map[string]interface{})
-	data["accountInfo"] = account
-	//fmt.Println(data)
+	data["accountInfo"] = account0
+	data["UserName"] = account1.UserName
+	data["Telephone"] = account1.Telephone
+	data["Email"] = account1.Email
+	fmt.Println(data)
 	response.ResponseWithData(c, 200, data)
 }
