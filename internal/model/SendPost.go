@@ -10,21 +10,23 @@ type SendPost struct {
 	SenderName          string
 	SenderProfileUrl    string
 	PhotoUrl            []string
+	IsLiked             bool
 }
 
 //构造函数，构造一个post
-func NewSendPost(post Post, user UserDetails, photoUrl []string) *SendPost {
+func NewSendPost(post Post, user UserDetails, photoUrl []string, isLiked bool) *SendPost {
 	return &SendPost{
 		Post:                post,
 		PostType:            0,
 		PublisherName:       user.NickName,
 		PublisherProfileUrl: user.ProfileUrl,
 		PhotoUrl:            photoUrl,
+		IsLiked:             isLiked,
 	}
 }
 
 //构造函数，构造一个forward
-func NewSendForward(forward Forward, publisher UserDetails, sender UserDetails, photoUrl []string) *SendPost {
+func NewSendForward(forward Forward, publisher UserDetails, sender UserDetails, photoUrl []string, isLiked bool) *SendPost {
 	return &SendPost{
 		Forward:             forward,
 		PostType:            1,
@@ -33,5 +35,6 @@ func NewSendForward(forward Forward, publisher UserDetails, sender UserDetails, 
 		SenderName:          sender.NickName,
 		SenderProfileUrl:    sender.ProfileUrl,
 		PhotoUrl:            photoUrl,
+		IsLiked:             isLiked,
 	}
 }
