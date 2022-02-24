@@ -20,6 +20,7 @@ func InitRouter() *gin.Engine {
 		routerV1MainPage.POST("/forward", middleware.JwtMiddleware(), mainpage.Forward)
 		routerV1MainPage.GET("/page", mainpage.ShowPage)
 		routerV1MainPage.POST("/like", mainpage.AddLike)
+		routerV1MainPage.POST("/cancelLike", mainpage.CancelLike)
 		routerV1MainPage.GET("/comment", mainpage.ShowComment)
 		routerV1MainPage.GET("/moreComment", mainpage.ShowMoreComment)
 		routerV1MainPage.POST("/insertComment", mainpage.InsertComment)
