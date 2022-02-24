@@ -7,11 +7,13 @@ import (
 	"ptc/internal/response"
 	"ptc/internal/respository"
 	"sort"
+	"strconv"
 )
 
 //显示帖子页面，这块的逻辑可以参照接口文档，基本保持一致
 func ShowPage(c *gin.Context) {
 	userId := c.Query("UserId")
+	userId_int,_ := strconv.Atoi(userId)
 	db := respository.GetDB()
 	//db.AutoMigrate(&comments)
 	var followIds []int
@@ -25,6 +27,13 @@ func ShowPage(c *gin.Context) {
 		for _, feedByFollowId := range feedsByFollowId {
 			feeds = append(feeds, feedByFollowId)
 		}
+	}
+
+	var likes []model.Like
+	db.Where("user_id = ?", userId).Find(&likes)
+	likeMap := make(map[model.Like]bool)
+	for _, like := range likes {
+		likeMap[like] = true
 	}
 	//var posts []model.Post
 	//var forwards []model.Forward
@@ -47,7 +56,13 @@ func ShowPage(c *gin.Context) {
 			for i, _ := range photoUrls {
 				photoUrls[i] = "http://" + c.Request.Host + photoUrls[i]
 			}
-			temSendPage := model.NewSendPost(temPost, temUserDetails, photoUrls)
+			temLike := model.NewLike(userId_int,temPost.PostId,0)
+			isliked := false
+			if likeMap[*temLike] == true{
+				isliked = true
+			}
+
+			temSendPage := model.NewSendPost(temPost, temUserDetails, photoUrls,isliked)
 			sendPage = append(sendPage, *temSendPage)
 		} else {
 			var temForwards model.Forward
@@ -60,7 +75,13 @@ func ShowPage(c *gin.Context) {
 			}
 			db.Where("user_id = ?", feed.SendId).Find(&sender)
 			sender.ProfileUrl = "http://" + c.Request.Host + sender.ProfileUrl
-			temSendPage := model.NewSendForward(temForwards, temUserDetails, sender, photoUrls)
+
+			temLike := model.NewLike(userId_int,temForwards.ForwardId,1)
+			isliked := false
+			if likeMap[*temLike] == true{
+				isliked = true
+			}
+			temSendPage := model.NewSendForward(temForwards, temUserDetails, sender, photoUrls,isliked)
 			sendPage = append(sendPage, *temSendPage)
 		}
 	}
