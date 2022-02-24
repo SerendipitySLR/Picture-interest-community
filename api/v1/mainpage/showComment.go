@@ -24,8 +24,19 @@ func ShowComment(c *gin.Context) {
 	//c.JSON(http.StatusOK, gin.H{
 	//	"CommentList": comments,
 	//})
+	var temUserDetails model.UserDetails
+	var sendComment []model.SendComment
+	for _,comment := range comments{
+		//通过userId查找UserDetails的表项，因为要使用到其中的用户名，头像信息
+		db.Where("user_id = ?", comment.UserId).Find(&temUserDetails)
+		//生成头像的url
+		temUserDetails.ProfileUrl = "http://" + c.Request.Host + temUserDetails.ProfileUrl
+		temSendComment := model.NewSendComent(comment,temUserDetails.NickName,temUserDetails.ProfileUrl)
+		sendComment = append(sendComment, *temSendComment)
+	}
+
 
 	data := make(map[string]interface{})
-	data["CommentList"] = comments
+	data["CommentList"] = sendComment
 	response.ResponseWithData(c,200,data)
 }
