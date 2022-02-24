@@ -9,7 +9,7 @@ import (
 )
 
 //点赞
-func AddLike(c *gin.Context) {
+func CancelLike(c *gin.Context) {
 	//参数
 	postId,_ := strconv.Atoi(c.PostForm("PostId"))
 	userId,_ := strconv.Atoi(c.PostForm("UserId"))
@@ -23,7 +23,7 @@ func AddLike(c *gin.Context) {
 		post.PostId = postId
 		//根据postId查找post表，存入post变量中  假设为变量与数据库绑定
 		db.Find(&post)
-		post.LikeNumber++
+		post.LikeNumber--
 		//likeNumber增加1后，保存入post表项中
 		db.Save(&post)
 	} else{
@@ -31,7 +31,7 @@ func AddLike(c *gin.Context) {
 		forward.ForwardId = postId
 		//根据postId查找post表，存入post变量中  假设为变量与数据库绑定
 		db.Find(&forward)
-		forward.LikeNumber++
+		forward.LikeNumber--
 		//likeNumber增加1后，保存入post表项中
 		db.Save(&forward)
 	}
@@ -40,7 +40,7 @@ func AddLike(c *gin.Context) {
 	like.UserId = userId
 	like.PostType = postType
 	//新建like表项
-	db.Create(&like)
+	db.Delete(&like)
 	response.Response(c,200)
 	//c.JSON(http.StatusOK, gin.H{
 	//	"post": post,
