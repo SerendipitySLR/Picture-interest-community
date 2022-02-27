@@ -33,7 +33,8 @@ func ShowPage(c *gin.Context) {
 	db.Where("user_id = ?", userId).Find(&likes)
 	likeMap := make(map[model.Like]bool)
 	for _, like := range likes {
-		likeMap[like] = true
+		temlike := model.NewLike(like.UserId,like.PostId,like.PostType)
+		likeMap[*temlike] = true
 	}
 	//var posts []model.Post
 	//var forwards []model.Forward
