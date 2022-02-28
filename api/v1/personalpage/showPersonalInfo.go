@@ -27,6 +27,7 @@ func ShowPersonalInfo(c *gin.Context) {
 	//拿到基本信息
 	data := make(map[string]interface{})
 	data["Nickname"] = userDetails.NickName
+	data["Signature"] = userDetails.Signature
 	data["Profile"] = userRelatedData.ProfileUrl
 	data["PostsNumber"] = userRelatedData.PostNumber
 	data["FansNumber"] = userRelatedData.FansNumber
