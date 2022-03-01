@@ -10,6 +10,12 @@ import (
 	"ptc/internal/response"
 	"ptc/internal/respository"
 	"strings"
+	"path"
+	"encoding/base64"
+	"github.com/spf13/viper"
+	"strconv"
+	"os"
+	"time"
 )
 
 func Send(c *gin.Context) {
@@ -23,7 +29,55 @@ func Send(c *gin.Context) {
 		response.Response(c, errmsg.POST_FORMAT_ERROR)
 		return
 	}
-
+	
+	
+	// 保存图片
+	var pictureUrl string
+	if len(creatPost.ImgList) == 0 {
+		response.Response(c, errmsg.HAVING_NO_PICTURE)
+		return
+	} else {
+		var (
+			enc      = base64.StdEncoding
+			filepath string
+		)
+		for index, img := range creatPost.ImgList {
+			if img[11] == 'j' {
+				img = img[23:]
+				timeUnix := strconv.FormatInt(time.Now().Unix(), 10)
+				filepath = path.Join(viper.GetString("server.PostImages"), timeUnix+strconv.Itoa(index)+".jpg")
+			} else if img[11] == 'p' {
+				img = img[22:]
+				timeUnix := strconv.FormatInt(time.Now().Unix(), 10)
+				filepath = path.Join(viper.GetString("server.PostImages"), timeUnix+strconv.Itoa(index)+".png")
+			} else if img[11] == 'g' {
+				img = img[22:]
+				timeUnix := strconv.FormatInt(time.Now().Unix(), 10)
+				filepath = path.Join(viper.GetString("server.PostImages"), timeUnix+strconv.Itoa(index)+".gif")
+			} else {
+				response.Response(c, errmsg.PICTURE_FORM_ERROR)
+				return
+			}
+			//图片解码
+			data, err := enc.DecodeString(img)
+			if err != nil {
+				response.Response(c, errmsg.PICTURE_DNCODE_ERROR)
+				return
+			}
+			//图片写入文件
+			f, _ := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE, os.ModePerm)
+			defer f.Close()
+			f.Write(data)
+			filepath = "/" + filepath
+			//记录保存的地址
+			if len(pictureUrl) == 0 {
+				pictureUrl += filepath
+			} else {
+				pictureUrl += ";" + filepath
+			}
+		}
+	}
+	
 	// 新建 post 行准备写入数据库
 	post := model.Post{
 		PublisherId:      creatPost.UID,
@@ -33,7 +87,7 @@ func Send(c *gin.Context) {
 		ForwardNumber:    0,
 		LikeNumber:       0,
 		CollectionNumber: 0,
-		PhotoPathUrl:     creatPost.PictureUrl,
+		PhotoPathUrl:     pictureUrl,
 		Location:         creatPost.Location,
 	}
 
@@ -45,7 +99,7 @@ func Send(c *gin.Context) {
 	}
 
 	// 写入 PostPhoto 表
-	photos := strings.Split(creatPost.PictureUrl, ";")
+	photos := strings.Split(pictureUrl, ";")
 	for _, photo := range photos {
 		respository.GetDB().Create(&model.PostPhoto{
 			PostId:   post.PostId,
