@@ -27,6 +27,10 @@ const (
 	FROM_FORMAT_ERROR    = 708
 	FILE_SAVE_ERROR      = 709
 
+	HAVING_NO_PICTURE    = 710
+	PICTURE_FORM_ERROR   = 711
+	PICTURE_DNCODE_ERROR = 712
+
 	// 个人主页模块错误
 
 	// 用户详细信息错误
@@ -61,6 +65,10 @@ var codeMsg = map[int]string{
 
 	FROM_FORMAT_ERROR: "上传文件错误",
 	FILE_SAVE_ERROR:   "文件写入错误",
+
+	HAVING_NO_PICTURE:    "没有图片",
+	PICTURE_FORM_ERROR:   "图片格式错误",
+	PICTURE_DNCODE_ERROR: "图片解码错误",
 
 	// 用户详细信息错误
 	PASSWORD_ERROR: "原密码错误",
