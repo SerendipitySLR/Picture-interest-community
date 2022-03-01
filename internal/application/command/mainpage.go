@@ -1,11 +1,11 @@
 package command
 
 type CreatPost struct {
-	PictureUrl string `json:"pictureurl"`
-	Contents   string `json:"contents"`
-	Date       string `json:"date"`
-	UID        int    `json:"uid"`
-	Location   string `json:"location"`
+	ImgList  []string `json:"imgList"`
+	Contents string   `json:"contents"`
+	Date     string   `json:"date"`
+	UID      int      `json:"uid"`
+	Location string   `json:"location"`
 }
 
 type CreatForward struct {
