@@ -89,13 +89,13 @@ func ShowPage(c *gin.Context) {
 	//根据更新时间倒序排序
 	sort.SliceStable(sendPage, func(i, j int) bool {
 		if sendPage[i].PostType == 0 && sendPage[j].PostType == 0 {
-			return sendPage[i].Post.UpdatedAt.After(sendPage[j].Post.UpdatedAt)
+			return sendPage[i].Post.CreatedAt.After(sendPage[j].Post.CreatedAt)
 		} else if sendPage[i].PostType == 0 && sendPage[j].PostType == 1 {
-			return sendPage[i].Post.UpdatedAt.After(sendPage[j].Forward.UpdatedAt)
+			return sendPage[i].Post.CreatedAt.After(sendPage[j].Forward.CreatedAt)
 		} else if sendPage[i].PostType == 1 && sendPage[j].PostType == 0 {
-			return sendPage[i].Forward.UpdatedAt.After(sendPage[j].Post.UpdatedAt)
+			return sendPage[i].Forward.CreatedAt.After(sendPage[j].Post.CreatedAt)
 		}
-		return sendPage[i].Forward.UpdatedAt.After(sendPage[j].Forward.UpdatedAt)
+		return sendPage[i].Forward.CreatedAt.After(sendPage[j].Forward.CreatedAt)
 	})
 	data := make(map[string]interface{})
 	data["PostList"] = sendPage
