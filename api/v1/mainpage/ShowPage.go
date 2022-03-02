@@ -16,18 +16,21 @@ func ShowPage(c *gin.Context) {
 	userId_int,_ := strconv.Atoi(userId)
 	db := respository.GetDB()
 	//db.AutoMigrate(&comments)
-	var followIds []int
-	// select followId from follow where user_id = userId;
-	db.Where("user_id = ?", userId).Model(&model.Follow{}).Pluck("follow_id", &followIds)
+	//var followIds []int
+	//// select followId from follow where user_id = userId;
+	//db.Where("user_id = ?", userId).Model(&model.Follow{}).Pluck("follow_id", &followIds)
+	//var feeds []model.Feeds
+	////遍历followIds，从feeds表中取出相应的，因为要使用对应的userId
+	//for _, followId := range followIds {
+	//	var feedsByFollowId []model.Feeds
+	//	db.Where("user_id = ?", followId).Find(&feedsByFollowId)
+	//	for _, feedByFollowId := range feedsByFollowId {
+	//		feeds = append(feeds, feedByFollowId)
+	//	}
+	//}
+
 	var feeds []model.Feeds
-	//遍历followIds，从feeds表中取出相应的，因为要使用对应的userId
-	for _, followId := range followIds {
-		var feedsByFollowId []model.Feeds
-		db.Where("user_id = ?", followId).Find(&feedsByFollowId)
-		for _, feedByFollowId := range feedsByFollowId {
-			feeds = append(feeds, feedByFollowId)
-		}
-	}
+	db.Where("user_id = ?", userId).Find(&feeds)
 
 	var likes []model.Like
 	db.Where("user_id = ?", userId).Find(&likes)
