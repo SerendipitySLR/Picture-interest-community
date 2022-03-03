@@ -1,7 +1,6 @@
 package mainpage
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"ptc/internal/model"
 	"ptc/internal/response"
@@ -45,18 +44,26 @@ func ShowPage(c *gin.Context) {
 	//这里定义了新的数据类型，为了保证发送的次序按时间排序，前端不需要再做类似逻辑，详见model/SendPost
 	var sendPage []model.SendPost
 	for _, feed := range feeds {
-		var temUserDetails model.UserDetails
-		//通过userId查找UserDetails的表项，因为要使用到其中的用户名，头像信息
-		db.Where("user_id = ?", feed.UserId).Find(&temUserDetails)
-		//生成头像的url
-		temUserDetails.ProfileUrl = "http://" + c.Request.Host + temUserDetails.ProfileUrl
+		//var temUserDetails model.UserDetails
+		////通过userId查找UserDetails的表项，因为要使用到其中的用户名，头像信息
+		//db.Where("user_id = ?", feed.UserId).Find(&temUserDetails)
+		////生成头像的url
+		//temUserDetails.ProfileUrl = "http://" + c.Request.Host + temUserDetails.ProfileUrl
 		//postType为0是post，为1是forward，从相应的表中取出sendPost所需要的信息，装填进去
 		if feed.PostType == 0 {
 			var temPost model.Post
 			var photoUrls []string
 			db.Where("post_id = ?", feed.PostId).Find(&temPost)
+
+			var temUserDetails model.UserDetails
+			//通过userId查找UserDetails的表项，因为要使用到其中的用户名，头像信息
+			db.Where("user_id = ?", temPost.PublisherId).Find(&temUserDetails)
+			//生成头像的url
+			temUserDetails.ProfileUrl = "http://" + c.Request.Host + temUserDetails.ProfileUrl
+
+
 			db.Where("post_id = ?", feed.PostId).Model(&model.PostPhoto{}).Pluck("photo_url", &photoUrls)
-			fmt.Println(photoUrls)
+
 			for i, _ := range photoUrls {
 				photoUrls[i] = "http://" + c.Request.Host + photoUrls[i]
 			}
@@ -73,6 +80,14 @@ func ShowPage(c *gin.Context) {
 			var sender model.UserDetails
 			var photoUrls []string
 			db.Where("forward_id = ?", feed.PostId).Find(&temForwards)
+
+			var temUserDetails model.UserDetails
+			//通过userId查找UserDetails的表项，因为要使用到其中的用户名，头像信息
+			db.Where("user_id = ?", temForwards.UserId).Find(&temUserDetails)
+			//生成头像的url
+			temUserDetails.ProfileUrl = "http://" + c.Request.Host + temUserDetails.ProfileUrl
+
+
 			db.Where("post_id = ?", temForwards.PostId).Model(&model.PostPhoto{}).Pluck("photo_url", &photoUrls)
 			for i, _ := range photoUrls {
 				photoUrls[i] = "http://" + c.Request.Host + photoUrls[i]
