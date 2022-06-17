@@ -30,7 +30,7 @@ const (
 	HAVING_NO_PICTURE    = 710
 	PICTURE_FORM_ERROR   = 711
 	PICTURE_DNCODE_ERROR = 712
-
+	POST_PICTURE_WRITE_ERROR = 713
 	// 个人主页模块错误
 
 	// 用户详细信息错误
