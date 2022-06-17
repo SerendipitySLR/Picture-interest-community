@@ -86,7 +86,7 @@ func Send(c *gin.Context) {
 	
 	// 新建 post 行准备写入数据库
 	post := model.Post{
-		PublisherId:      creatPost.UID,
+		PublisherId:      uid,
 		PhotoNumber:      0,
 		Content:          creatPost.Contents,
 		CommentNumber:    0,
