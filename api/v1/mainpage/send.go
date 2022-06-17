@@ -65,7 +65,11 @@ func Send(c *gin.Context) {
 				return
 			}
 			//图片写入文件
-			f, _ := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE, os.ModePerm)
+			f, err := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE, os.ModePerm)
+			if err != nil {
+				response.Response(c, errmsg.POST_PICTURE_WRITE_ERROR)
+				return
+			}
 			defer f.Close()
 			f.Write(data)
 			filepath = "/" + filepath
