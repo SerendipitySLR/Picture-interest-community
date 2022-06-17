@@ -42,6 +42,7 @@ func Send(c *gin.Context) {
 			filepath string
 		)
 		for index, img := range creatPost.ImgList {
+			fmt.Println("准备图片：。。。。。。。。")
 			if img[11] == 'j' {
 				img = img[23:]
 				timeUnix := strconv.FormatInt(time.Now().Unix(), 10)
@@ -73,6 +74,7 @@ func Send(c *gin.Context) {
 			defer f.Close()
 			f.Write(data)
 			filepath = "/" + filepath
+			fmt.Println("当前图片地址为：" + filepath)
 			//记录保存的地址
 			if len(pictureUrl) == 0 {
 				pictureUrl += filepath
